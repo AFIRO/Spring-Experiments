@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class InternalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -22,7 +22,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    public User(String userName, String password, String role) {
+    public InternalUser(String userName, String password, String role) {
         this.userName = userName;
         this.password = password;
         this.role = role;

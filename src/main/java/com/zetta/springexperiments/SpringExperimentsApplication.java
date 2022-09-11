@@ -1,10 +1,12 @@
 package com.zetta.springexperiments;
 
 import com.zetta.springexperiments.entity.Car;
+import com.zetta.springexperiments.entity.Coffee;
 import com.zetta.springexperiments.entity.Owner;
 import com.zetta.springexperiments.repository.CarRepository;
+import com.zetta.springexperiments.repository.CoffeeRepository;
 import com.zetta.springexperiments.repository.OwnerRepository;
-import com.zetta.springexperiments.security.User;
+import com.zetta.springexperiments.security.InternalUser;
 import com.zetta.springexperiments.security.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class SpringExperimentsApplication implements CommandLineRunner {
     public OwnerRepository ownerRepository;
     @Autowired
     public UserRepository userRepository;
+    @Autowired
+    public CoffeeRepository coffeeRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringExperimentsApplication.class, args);
@@ -50,11 +54,8 @@ public class SpringExperimentsApplication implements CommandLineRunner {
                     .getOwner().getFirstName());
         }
 
-        // Username: user, password: user
-        userRepository.save(new User("user",
-                "$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue", "USER"));
-// Username: admin, password: admin
-        userRepository.save(new User("admin",
-                "$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9. mP9vpMu0ssKi8GW", "ADMIN"));
+
+        coffeeRepository.save(new Coffee("Black"));
+        coffeeRepository.save(new Coffee("Mocha"));
     }
 }

@@ -1,10 +1,10 @@
 package com.zetta.springexperiments.entity;
 
 import lombok.*;
-import org.hibernate.Hibernate;
+
 
 import javax.persistence.*;
-import java.util.Objects;
+
 
 @Entity
 @Builder
@@ -34,4 +34,3 @@ public class Car {
         this.owner = owner;
     }
 }
-
