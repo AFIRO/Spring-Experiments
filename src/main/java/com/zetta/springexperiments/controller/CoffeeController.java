@@ -3,6 +3,8 @@ package com.zetta.springexperiments.controller;
 import com.zetta.springexperiments.entity.Coffee;
 import com.zetta.springexperiments.repository.CoffeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class CoffeeController {
     private CoffeeRepository coffeeRepository;
 
     @GetMapping("")
-    private List<Coffee> getAll(){
-        return coffeeRepository.findAll();
+    private ResponseEntity<List<Coffee>> getAll(){
+        return new ResponseEntity<>(coffeeRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -24,23 +26,29 @@ public class CoffeeController {
     }
 
     @PostMapping()
-    private void addCoffee(@RequestBody(required = true) Coffee coffee){
+    private Coffee addCoffee(@RequestBody(required = true) Coffee coffee){
         coffeeRepository.save(coffee);
+        return coffee;
     }
 
     @PutMapping("/{id}")
-    private void addCoffee(@PathVariable String id, @RequestBody(required = true) Coffee coffee){
+    private ResponseEntity<Coffee> updateCoffee(@PathVariable String id, @RequestBody(required = true) Coffee coffee){
         Optional<Coffee> optionalCoffee = coffeeRepository.findById(id);
         if (optionalCoffee.isPresent()){
             Coffee coffeeInDb = optionalCoffee.get();
             coffeeInDb.setName(coffee.getName());
             coffeeRepository.save(coffeeInDb);
-        }
+            return new ResponseEntity<>(coffeeInDb,HttpStatus.OK);
+        } else
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")
-    private void deleteCoffee(@PathVariable String id){
+    private ResponseEntity<Coffee> deleteCoffee(@PathVariable String id){
+        if (coffeeRepository.existsById(id)){
         coffeeRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);}
+        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
