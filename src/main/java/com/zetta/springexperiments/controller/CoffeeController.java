@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @RequestMapping(value = "/coffees")
 @RestController
 public class CoffeeController {
@@ -16,39 +17,30 @@ public class CoffeeController {
     private CoffeeRepository coffeeRepository;
 
     @GetMapping("")
-    private ResponseEntity<List<Coffee>> getAll(){
+    private ResponseEntity<List<Coffee>> getAll() {
         return new ResponseEntity<>(coffeeRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    private Optional<Coffee> getCoffeeById(@PathVariable("id") String id){
+    private Optional<Coffee> getCoffeeById(@PathVariable("id") String id) {
         return coffeeRepository.findById(id);
     }
 
     @PostMapping()
-    private Coffee addCoffee(@RequestBody(required = true) Coffee coffee){
-        coffeeRepository.save(coffee);
-        return coffee;
+    private Coffee addCoffee(@RequestBody(required = true) Coffee coffee) {
+        return coffeeRepository.save(coffee);
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Coffee> updateCoffee(@PathVariable String id, @RequestBody(required = true) Coffee coffee){
-        Optional<Coffee> optionalCoffee = coffeeRepository.findById(id);
-        if (optionalCoffee.isPresent()){
-            Coffee coffeeInDb = optionalCoffee.get();
-            coffeeInDb.setName(coffee.getName());
-            coffeeRepository.save(coffeeInDb);
-            return new ResponseEntity<>(coffeeInDb,HttpStatus.OK);
-        } else
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    private ResponseEntity<Coffee> updateCoffee(@PathVariable String id, @RequestBody(required = true) Coffee coffee) {
+        return coffeeRepository.existsById(id)
+                ? new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.OK)
+                : new ResponseEntity<>(coffeeRepository.save(coffee),HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Coffee> deleteCoffee(@PathVariable String id){
-        if (coffeeRepository.existsById(id)){
+    private void deleteCoffee(@PathVariable String id) {
         coffeeRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);}
-        else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
