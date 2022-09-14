@@ -2,14 +2,13 @@ package com.zetta.springexperiments.entity;
 
 import lombok.*;
 
-
 import javax.persistence.*;
 
 
 @Entity
 @Builder
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class Car {

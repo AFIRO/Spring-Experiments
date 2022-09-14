@@ -5,6 +5,7 @@ import com.zetta.springexperiments.repository.CoffeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CoffeeController {
         return new ResponseEntity<>(coffeeRepository.findAll(), HttpStatus.OK);
     }
 
+    @Secured("ADMIN")
     @GetMapping("/{id}")
     private Optional<Coffee> getCoffeeById(@PathVariable("id") String id) {
         return coffeeRepository.findById(id);
@@ -35,7 +37,7 @@ public class CoffeeController {
     private ResponseEntity<Coffee> updateCoffee(@PathVariable String id, @RequestBody(required = true) Coffee coffee) {
         return coffeeRepository.existsById(id)
                 ? new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.OK)
-                : new ResponseEntity<>(coffeeRepository.save(coffee),HttpStatus.CREATED);
+                : new ResponseEntity<>(coffeeRepository.save(coffee), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

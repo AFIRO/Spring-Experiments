@@ -1,27 +1,25 @@
-package com.zetta.springexperiments.entity;
+package com.zetta.springexperiments.security;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
+@Builder
 @Getter
-@Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
-public class Coffee {
+@Setter
+
+public class ApplicationUser {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @Column(name = "id", nullable = false)
-    private String id;
-    private String name;
-
-    public Coffee(String name) {
-        this.name = name;
-    }
+    private String userId;
+    private String userName;
+    private String password;
+    private String role;
 }

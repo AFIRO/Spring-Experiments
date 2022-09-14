@@ -11,18 +11,18 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer",
         "handler"})
 public class Owner {
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    List<Car> cars;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String firstName,lastName;
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "owner")
-    List<Car> cars;
+    private String firstName, lastName;
 
     public Owner(String firstName, String lastName) {
         this.firstName = firstName;
